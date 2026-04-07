@@ -1,60 +1,45 @@
-import { useEffect, useState } from "react";
-import { Milestone } from "../types";
-import { getMilestones } from "../services";
-import { TimelineItem } from "../components";
+import { useMilestones } from "../hooks/use-milestones";
+import { useDarkMode } from "../utils/use-dark-mode";
+import {
+  SiteHeader,
+  SiteFooter,
+  FilterBar,
+  TimelineList,
+  LoadingScreen,
+} from "../components";
 
 const Home = () => {
-  const [milestones, setMilestones] = useState<Milestone[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { filteredMilestones, loading, error, categories, filters, actions } =
+    useMilestones();
+  const { isDark, toggle } = useDarkMode();
 
-  useEffect(() => {
-    getMilestones()
-      .then((data) => {
-        setMilestones(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading)
-    return (
-      <div className="flex items-center justify-center min-h-screen text-surface-600 font-medium bg-surface-50">
-        인생 기록 불러오는 중...
-      </div>
-    );
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
-    <div className="min-h-screen bg-surface-50 py-12 px-4">
-      <header className="max-w-2xl mx-auto mb-12 text-center md:text-left">
-        <h1 className="text-3xl font-bold text-primary tracking-tight">
-          LifeLog <span className="text-surface-900">Timeline</span>
-        </h1>
-        <p className="text-surface-600 mt-2 italic font-light">
-          "기록하지 않은 삶은 내 것이 아니다."
-        </p>
-      </header>
+    <div className="min-h-screen bg-surface-50 dark:bg-surface-950 transition-colors duration-500 py-12 px-4 md:px-8">
+      <div className="max-w-3xl mx-auto">
+        <SiteHeader isDark={isDark} toggle={toggle} />
 
-      <main className="max-w-2xl mx-auto relative">
-        {error ? (
-          <div className="text-center py-20 text-red-500 bg-white rounded-xl border border-red-100 shadow-sm">
-            {error}
-          </div>
-        ) : milestones.length > 0 ? (
-          <div className="timeline-list">
-            {milestones.map((m) => (
-              <TimelineItem key={m.id} milestone={m} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-center py-20 text-surface-600 bg-white rounded-xl border border-surface-100 shadow-sm">
-            등록된 인생 기록이 없습니다.
-          </p>
-        )}
-      </main>
+        <main>
+          <FilterBar
+            categories={categories}
+            selectedCategory={filters.selectedCategory}
+            onSelectCategory={actions.setSelectedCategory}
+            showHighImpact={filters.showHighImpact}
+            onToggleHighImpact={() =>
+              actions.setShowHighImpact(!filters.showHighImpact)
+            }
+            searchQuery={filters.searchQuery}
+            onSearchChange={actions.setSearchQuery}
+          />
+
+          <TimelineList milestones={filteredMilestones} error={error} />
+        </main>
+
+        <SiteFooter />
+      </div>
     </div>
   );
 };
