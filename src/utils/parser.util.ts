@@ -15,6 +15,6 @@ export const parseMilestone = (issue: GithubIssue): Milestone => {
     content: issue.body,
     tags: issue.labels.map((l) => l.name),
     date: new Date(issue.created_at).toLocaleDateString(),
-    isHighImpact: issue.reactions.total_count > 0,
+    isHighImpact: issue.reactions.total_count >= 3,
   } as Milestone;
 };
