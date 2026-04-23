@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { TimelineItem } from "./timeline-item";
-import { Milestone } from "../types";
+import { Milestone } from "@/types";
 
 interface TimelineListProps {
   milestones: Milestone[];

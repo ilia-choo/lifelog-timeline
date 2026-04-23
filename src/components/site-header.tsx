@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from "@/components";
 
 interface SiteHeaderProps {
   isDark: boolean;

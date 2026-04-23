@@ -1,4 +1,4 @@
-import { Milestone, GithubIssue } from "../types";
+import { Milestone, GithubIssue } from "@/types";
 
 export const parseMilestone = (issue: GithubIssue): Milestone => {
   // [숫자] 패턴 추출 (정규표현식)

@@ -1,6 +1,6 @@
-import { GithubIssue, Milestone } from "../types";
-import { parseMilestone } from "../utils";
-import { apiClient } from "./apiClient";
+import { GithubIssue, Milestone } from "@/types";
+import { parseMilestone } from "@/utils";
+import { apiClient } from "@/apis/apiClient";
 
 export const getMilestones = async (): Promise<Milestone[]> => {
   try {

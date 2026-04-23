@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Trophy, Calendar, Hash } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { Milestone } from "../types";
+import { Milestone } from "@/types";
 
 export const TimelineItem = ({ milestone }: { milestone: Milestone }) => {
   return (

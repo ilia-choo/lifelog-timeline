@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { Milestone } from "../types";
-import { getMilestones } from "../services";
+import { Milestone } from "@/types";
+import { getMilestones } from "@/services";
 
 export const useMilestones = () => {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
