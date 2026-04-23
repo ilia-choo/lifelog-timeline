@@ -1,5 +1,4 @@
-import { useMilestones } from "@/hooks";
-import { useDarkMode } from "@/utils/use-dark-mode";
+import { useMilestones, useDarkMode } from "@/hooks";
 import { SiteHeader, SiteFooter, FilterBar, TimelineList, LoadingScreen } from "@/components";
 
 const Home = () => {

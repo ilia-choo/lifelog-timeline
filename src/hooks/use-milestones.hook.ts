@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Milestone } from "@/types";
-import { getMilestones } from "@/services";
+import { createMilestone, getMilestones } from "@/services";
 
 export const useMilestones = () => {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
@@ -43,6 +43,22 @@ export const useMilestones = () => {
     });
   }, [milestones, selectedCategory, showHighImpact, searchQuery]);
 
+  const addMilestone = async (data: {
+    age: number;
+    title: string;
+    content: string;
+    tags: string[];
+  }) => {
+    try {
+      const newMilestone = await createMilestone(data);
+      setMilestones((prev) => [...prev, newMilestone].sort((a, b) => a.age - b.age));
+      return newMilestone;
+    } catch (err: any) {
+      alert(err.message);
+      throw err;
+    }
+  };
+
   return {
     milestones,
     filteredMilestones,
@@ -57,7 +73,8 @@ export const useMilestones = () => {
     actions: {
       setSelectedCategory,
       setShowHighImpact,
-      setSearchQuery
+      setSearchQuery,
+      addMilestone
     }
   };
 };
