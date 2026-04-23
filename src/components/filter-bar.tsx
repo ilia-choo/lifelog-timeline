@@ -18,7 +18,7 @@ export const FilterBar = ({
   showHighImpact,
   onToggleHighImpact,
   searchQuery,
-  onSearchChange,
+  onSearchChange
 }: FilterBarProps) => {
   return (
     <div className="space-y-6 mb-12">

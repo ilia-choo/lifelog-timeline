@@ -65,17 +65,14 @@ export const TimelineItem = ({ milestone }: { milestone: Milestone }) => {
                 />
               ),
               ul: ({ ...props }) => (
-                <ul
-                  {...props}
-                  className="list-disc list-inside space-y-1 my-3"
-                />
+                <ul {...props} className="list-disc list-inside space-y-1 my-3" />
               ),
               blockquote: ({ ...props }) => (
                 <blockquote
                   {...props}
                   className="border-l-4 border-primary/20 pl-4 py-1 italic bg-primary/5 rounded-r-lg my-3"
                 />
-              ),
+              )
             }}
           >
             {milestone.content}

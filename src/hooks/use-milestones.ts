@@ -31,8 +31,7 @@ export const useMilestones = () => {
 
   const filteredMilestones = useMemo(() => {
     return milestones.filter((m) => {
-      const matchesCategory =
-        !selectedCategory || m.tags.includes(selectedCategory);
+      const matchesCategory = !selectedCategory || m.tags.includes(selectedCategory);
       const matchesImpact = !showHighImpact || m.isHighImpact;
       const matchesSearch =
         !searchQuery ||
@@ -53,12 +52,12 @@ export const useMilestones = () => {
     filters: {
       selectedCategory,
       showHighImpact,
-      searchQuery,
+      searchQuery
     },
     actions: {
       setSelectedCategory,
       setShowHighImpact,
-      setSearchQuery,
-    },
+      setSearchQuery
+    }
   };
 };

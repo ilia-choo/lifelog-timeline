@@ -1,16 +1,9 @@
 import { useMilestones } from "../hooks";
 import { useDarkMode } from "../utils/use-dark-mode";
-import {
-  SiteHeader,
-  SiteFooter,
-  FilterBar,
-  TimelineList,
-  LoadingScreen,
-} from "../components";
+import { SiteHeader, SiteFooter, FilterBar, TimelineList, LoadingScreen } from "../components";
 
 const Home = () => {
-  const { filteredMilestones, loading, error, categories, filters, actions } =
-    useMilestones();
+  const { filteredMilestones, loading, error, categories, filters, actions } = useMilestones();
   const { isDark, toggle } = useDarkMode();
 
   if (loading) {

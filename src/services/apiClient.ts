@@ -3,7 +3,7 @@ const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
 const defaultHeaders: HeadersInit = {
   "Content-Type": "application/json",
-  ...(GITHUB_TOKEN ? { Authorization: `Bearer ${GITHUB_TOKEN}` } : {}),
+  ...(GITHUB_TOKEN ? { Authorization: `Bearer ${GITHUB_TOKEN}` } : {})
 };
 
 const handleResponse = async (response: Response) => {
@@ -18,7 +18,7 @@ export const apiClient = {
   get: async <T>(endpoint: string = ""): Promise<T> => {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: "GET",
-      headers: defaultHeaders,
+      headers: defaultHeaders
     });
     return handleResponse(response);
   },
@@ -27,7 +27,7 @@ export const apiClient = {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: "POST",
       headers: defaultHeaders,
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     });
     return handleResponse(response);
   },
@@ -36,7 +36,7 @@ export const apiClient = {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: "PATCH",
       headers: defaultHeaders,
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     });
     return handleResponse(response);
   },
@@ -44,8 +44,8 @@ export const apiClient = {
   delete: async <T>(endpoint: string): Promise<T> => {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: "DELETE",
-      headers: defaultHeaders,
+      headers: defaultHeaders
     });
     return handleResponse(response);
-  },
+  }
 };
