@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import { cn } from "@/utils";
 
 interface MilestoneFormProps {
-  onSubmit: (data: {
-    age: number;
-    title: string;
-    content: string;
-    tags: string[];
-  }) => Promise<void>;
+  onSubmit: (data: { age: number; title: string; content: string; tags: string[] }) => Promise<any>;
   onCancel: () => void;
 }
 
@@ -28,7 +23,7 @@ export const MilestoneForm = ({ onSubmit, onCancel }: MilestoneFormProps) => {
           .map((t) => t.trim())
           .filter(Boolean)
       });
-      onCancel(); // 성공 시 폼 닫기
+      onCancel();
     } finally {
       setIsSubmitting(false);
     }
