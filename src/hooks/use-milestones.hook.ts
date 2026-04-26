@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Milestone } from "@/types";
 import { createMilestone, deleteMilestone, getMilestones, updateMilestone } from "@/services";
 
@@ -11,20 +11,27 @@ export const useMilestones = () => {
   const [showHighImpact, setShowHighImpact] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const fetchData = async () => {
+  const sortMilestones = (a: Milestone, b: Milestone) => {
+    if (a.age !== b.age) {
+      return a.age - b.age;
+    }
+    return new Date(a.date).getTime() - new Date(b.date).getTime();
+  };
+
+  const fetchData = useCallback(async () => {
     try {
       const data = await getMilestones();
-      setMilestones(data);
+      setMilestones(data.sort(sortMilestones));
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const categories = useMemo(() => {
     const tags = new Set<string>();
@@ -46,7 +53,7 @@ export const useMilestones = () => {
 
   const addMilestone = async (data: any) => {
     const newEntry = await createMilestone(data);
-    setMilestones((prev) => [...prev, newEntry].sort((a, b) => a.age - b.age));
+    setMilestones((prev) => [...prev, newEntry].sort(sortMilestones));
     return newEntry;
   };
 
@@ -76,7 +83,7 @@ export const useMilestones = () => {
     try {
       await updateMilestone(issueNumber, data);
     } catch (err) {
-      setMilestones(previousMilestones);
+      setMilestones(previousMilestones.sort(sortMilestones));
       alert("수정에 실패했습니다.");
     }
   };
