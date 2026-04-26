@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import { cn } from "@/utils";
+import { Milestone } from "@/types";
 
 interface MilestoneFormProps {
   onSubmit: (data: { age: number; title: string; content: string; tags: string[] }) => Promise<any>;
   onCancel: () => void;
+  initialData?: Milestone;
 }
 
-export const MilestoneForm = ({ onSubmit, onCancel }: MilestoneFormProps) => {
-  const [formData, setFormData] = useState({ age: "", title: "", content: "", tags: "" });
+export const MilestoneForm = ({ onSubmit, onCancel, initialData }: MilestoneFormProps) => {
+  const [formData, setFormData] = useState({
+    age: initialData?.age.toString() || "",
+    title: initialData?.title || "",
+    content: initialData?.content || "",
+    tags: initialData?.tags.join(", ") || ""
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {

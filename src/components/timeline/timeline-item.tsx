@@ -1,15 +1,39 @@
 import { motion } from "framer-motion";
-import { Trophy, Calendar, Hash, Trash2 } from "lucide-react";
+import { Trophy, Calendar, Hash, Trash2, Pencil } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Milestone } from "@/types";
+import { useState } from "react";
+import { MilestoneForm } from "@/components/timeline/milestone-form";
 
 export const TimelineItem = ({
   milestone,
-  onDelete
+  onDelete,
+  onUpdate
 }: {
   milestone: Milestone;
   onDelete: (number: number) => void;
+  onUpdate: (
+    issueNumber: number,
+    data: { age: number; title: string; content: string; tags: string[] }
+  ) => Promise<void>;
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  if (isEditing) {
+    return (
+      <div className="pl-10 pb-12">
+        <MilestoneForm
+          initialData={milestone}
+          onSubmit={async (data) => {
+            await onUpdate(milestone.number, data);
+            setIsEditing(false);
+          }}
+          onCancel={() => setIsEditing(false)}
+        />
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -33,17 +57,7 @@ export const TimelineItem = ({
         whileHover={{ y: -4, scale: 1.01 }}
         className="relative p-6 bg-white dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-800 transition-all duration-300"
       >
-        <div className="absolute top-4 right-4 flex gap-1 z-20">
-          <button
-            onClick={() => onDelete(milestone.number)}
-            className="p-2 opacity-0 group-hover:opacity-100 text-surface-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all"
-            title="삭제"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pr-12">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">
               {milestone.age}세
@@ -60,9 +74,24 @@ export const TimelineItem = ({
             <Calendar className="w-3 h-3" />
             {milestone.date}
           </div>
+          <div className="flex gap-1 z-20">
+            <button
+              onClick={() => setIsEditing(true)}
+              className="p-2 opacity-0 group-hover:opacity-100 text-surface-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => onDelete(milestone.number)}
+              className="p-2 opacity-0 group-hover:opacity-100 text-surface-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all"
+              title="삭제"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        <h3 className="text-xl font-bold text-surface-900 dark:text-surface-100 mb-3 group-hover:text-primary transition-colors pr-12">
+        <h3 className="text-xl font-bold text-surface-900 dark:text-surface-100 mb-3 group-hover:text-primary transition-colors">
           {milestone.title}
         </h3>
 

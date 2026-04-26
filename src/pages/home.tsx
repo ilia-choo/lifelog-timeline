@@ -61,6 +61,7 @@ const Home = () => {
             milestones={filteredMilestones}
             error={error}
             onDelete={actions.deleteItem}
+            onUpdate={actions.editItem}
           />
         </main>
         <SiteFooter />

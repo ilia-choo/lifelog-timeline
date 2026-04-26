@@ -6,9 +6,13 @@ interface TimelineListProps {
   milestones: Milestone[];
   error: string | null;
   onDelete: (number: number) => void;
+  onUpdate: (
+    issueNumber: number,
+    data: { age: number; title: string; content: string; tags: string[] }
+  ) => Promise<void>;
 }
 
-export const TimelineList = ({ milestones, error, onDelete }: TimelineListProps) => {
+export const TimelineList = ({ milestones, error, onDelete, onUpdate }: TimelineListProps) => {
   if (error) {
     return (
       <motion.div
@@ -37,7 +41,12 @@ export const TimelineList = ({ milestones, error, onDelete }: TimelineListProps)
     <div className="relative">
       <AnimatePresence mode="popLayout">
         {milestones.map((milestone) => (
-          <TimelineItem key={milestone.id} milestone={milestone} onDelete={onDelete} />
+          <TimelineItem
+            key={milestone.id}
+            milestone={milestone}
+            onDelete={onDelete}
+            onUpdate={onUpdate}
+          />
         ))}
       </AnimatePresence>
     </div>

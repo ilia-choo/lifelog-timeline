@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Milestone } from "@/types";
-import { createMilestone, getMilestones } from "@/services";
-import { apiClient } from "@/apis/apiClient";
+import { createMilestone, deleteMilestone, getMilestones, updateMilestone } from "@/services";
 
 export const useMilestones = () => {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
@@ -59,11 +58,26 @@ export const useMilestones = () => {
     setMilestones((prev) => prev.filter((m) => m.number !== issueNumber));
 
     try {
-      await apiClient.patch(`/${issueNumber}`, { state: "closed" });
+      await deleteMilestone(issueNumber);
     } catch (err) {
       setMilestones(previousMilestones);
       alert("삭제 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
       console.error("Delete failed:", err);
+    }
+  };
+
+  const editItem = async (issueNumber: number, data: any) => {
+    const previousMilestones = [...milestones];
+
+    setMilestones((prev) =>
+      prev.map((m) => (m.number === issueNumber ? { ...m, ...data, title: data.title } : m))
+    );
+
+    try {
+      await updateMilestone(issueNumber, data);
+    } catch (err) {
+      setMilestones(previousMilestones);
+      alert("수정에 실패했습니다.");
     }
   };
 
@@ -74,6 +88,13 @@ export const useMilestones = () => {
     error,
     categories,
     filters: { selectedCategory, showHighImpact, searchQuery },
-    actions: { setSelectedCategory, setShowHighImpact, setSearchQuery, addMilestone, deleteItem }
+    actions: {
+      setSelectedCategory,
+      setShowHighImpact,
+      setSearchQuery,
+      addMilestone,
+      deleteItem,
+      editItem
+    }
   };
 };

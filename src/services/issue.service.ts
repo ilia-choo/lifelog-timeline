@@ -27,3 +27,21 @@ export const createMilestone = async (data: {
   const response = await apiClient.post<GithubIssue>("", body);
   return parseMilestone(response);
 };
+
+export const deleteMilestone = async (issueNumber: number) => {
+  await apiClient.patch(`/${issueNumber}`, { state: "closed" });
+};
+
+export const updateMilestone = async (
+  issueNumber: number,
+  data: { age: number; title: string; content: string; tags: string[] }
+): Promise<Milestone> => {
+  const body = {
+    title: `[${data.age}] ${data.title}`,
+    body: data.content,
+    labels: data.tags
+  };
+
+  const response = await apiClient.patch<GithubIssue>(`/${issueNumber}`, body);
+  return parseMilestone(response);
+};
