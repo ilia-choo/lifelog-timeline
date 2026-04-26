@@ -11,7 +11,7 @@ import {
 import { Plus, X } from "lucide-react";
 
 const Home = () => {
-  const { filteredMilestones, loading, error, categories, filters, actions } = useMilestones();
+  const { groupedMilestones, loading, error, categories, filters, actions } = useMilestones();
   const { isDark, toggle } = useDarkMode();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -58,7 +58,7 @@ const Home = () => {
           </div>
 
           <TimelineList
-            milestones={filteredMilestones}
+            groupedMilestones={groupedMilestones}
             error={error}
             onDelete={actions.deleteItem}
             onUpdate={actions.editItem}

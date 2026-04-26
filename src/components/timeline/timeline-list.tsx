@@ -1,9 +1,9 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { TimelineItem } from "./timeline-item";
 import { Milestone } from "@/types";
 
 interface TimelineListProps {
-  milestones: Milestone[];
+  groupedMilestones: { decade: number; items: Milestone[] }[];
   error: string | null;
   onDelete: (number: number) => void;
   onUpdate: (
@@ -12,43 +12,51 @@ interface TimelineListProps {
   ) => Promise<void>;
 }
 
-export const TimelineList = ({ milestones, error, onDelete, onUpdate }: TimelineListProps) => {
-  if (error) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="text-center py-20 text-red-500 bg-white dark:bg-surface-900 rounded-3xl border border-red-100 dark:border-red-900/30 shadow-sm"
-      >
-        {error}
-      </motion.div>
-    );
-  }
-
-  if (milestones.length === 0) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="text-center py-32 text-surface-400 dark:text-surface-600 bg-white dark:bg-surface-900/50 rounded-3xl border border-dashed border-surface-200 dark:border-surface-800"
-      >
-        검색 결과가 없습니다.
-      </motion.div>
-    );
-  }
+export const TimelineList = ({
+  groupedMilestones,
+  error,
+  onDelete,
+  onUpdate
+}: TimelineListProps) => {
+  if (error) return <div className="text-center py-20 text-red-500">{error}</div>;
+  if (groupedMilestones.length === 0)
+    return <div className="text-center py-32 text-surface-400">기록이 없습니다.</div>;
 
   return (
-    <div className="relative">
-      <AnimatePresence mode="popLayout">
-        {milestones.map((milestone) => (
-          <TimelineItem
-            key={milestone.id}
-            milestone={milestone}
-            onDelete={onDelete}
-            onUpdate={onUpdate}
-          />
-        ))}
-      </AnimatePresence>
+    <div className="space-y-16">
+      {groupedMilestones.map((group) => (
+        <section key={group.decade} className="relative mt-20 first:mt-0">
+          <div className="sticky top-0 z-30 py-4 -mx-4 px-4 bg-surface-50/80 dark:bg-surface-950/80 backdrop-blur-md transition-colors">
+            <div className="flex items-center gap-4">
+              <span className="text-3xl font-black text-primary/40 tracking-tighter">
+                {group.decade}
+              </span>
+              <div className="flex flex-col -space-y-1">
+                <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
+                  Chapter
+                </span>
+                <span className="text-sm font-bold text-surface-900 dark:text-surface-100">
+                  The {group.decade}s
+                </span>
+              </div>
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-primary/20 via-primary/5 to-transparent" />
+            </div>
+          </div>
+
+          <div className="pt-8 relative">
+            <AnimatePresence mode="popLayout">
+              {group.items.map((milestone) => (
+                <TimelineItem
+                  key={milestone.id}
+                  milestone={milestone}
+                  onDelete={onDelete}
+                  onUpdate={onUpdate}
+                />
+              ))}
+            </AnimatePresence>
+          </div>
+        </section>
+      ))}
     </div>
   );
 };

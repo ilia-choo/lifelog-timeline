@@ -88,13 +88,57 @@ export const useMilestones = () => {
     }
   };
 
+  const groupedMilestones = useMemo(() => {
+    const groups: { [key: number]: Milestone[] } = {};
+
+    filteredMilestones.forEach((m) => {
+      const decade = Math.floor(m.age / 10) * 10;
+      if (!groups[decade]) groups[decade] = [];
+      groups[decade].push(m);
+    });
+
+    return Object.keys(groups)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .map((decade) => ({
+        decade,
+        items: groups[decade]
+      }));
+  }, [filteredMilestones]);
+
+  const stats = useMemo(() => {
+    if (milestones.length === 0) return null;
+
+    const total = milestones.length;
+    const highImpactCount = milestones.filter((m) => m.isHighImpact).length;
+
+    const ageCounts: { [key: number]: number } = {};
+    milestones.forEach((m) => {
+      ageCounts[m.age] = (ageCounts[m.age] || 0) + 1;
+    });
+    const mostActiveAge = Object.keys(ageCounts).reduce((a, b) =>
+      ageCounts[Number(a)] > ageCounts[Number(b)] ? a : b
+    );
+
+    return { total, highImpactCount, mostActiveAge };
+  }, [milestones]);
+
+  const randomMilestone = useMemo(() => {
+    if (milestones.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * milestones.length);
+    return milestones[randomIndex];
+  }, [milestones]);
+
   return {
     milestones,
+    groupedMilestones,
     filteredMilestones,
     loading,
     error,
     categories,
     filters: { selectedCategory, showHighImpact, searchQuery },
+    stats,
+    randomMilestone,
     actions: {
       setSelectedCategory,
       setShowHighImpact,
