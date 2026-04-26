@@ -1,5 +1,6 @@
 export interface GithubIssue {
   id: number;
+  number: number;
   title: string;
   body: string;
   labels: { name: string }[];
@@ -9,6 +10,7 @@ export interface GithubIssue {
 
 export interface Milestone {
   id: number;
+  number: number;
   age: number;
   title: string;
   content: string;

@@ -5,9 +5,10 @@ import { Milestone } from "@/types";
 interface TimelineListProps {
   milestones: Milestone[];
   error: string | null;
+  onDelete: (number: number) => void;
 }
 
-export const TimelineList = ({ milestones, error }: TimelineListProps) => {
+export const TimelineList = ({ milestones, error, onDelete }: TimelineListProps) => {
   if (error) {
     return (
       <motion.div
@@ -36,7 +37,7 @@ export const TimelineList = ({ milestones, error }: TimelineListProps) => {
     <div className="relative">
       <AnimatePresence mode="popLayout">
         {milestones.map((milestone) => (
-          <TimelineItem key={milestone.id} milestone={milestone} />
+          <TimelineItem key={milestone.id} milestone={milestone} onDelete={onDelete} />
         ))}
       </AnimatePresence>
     </div>

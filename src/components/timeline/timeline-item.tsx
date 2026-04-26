@@ -1,9 +1,15 @@
 import { motion } from "framer-motion";
-import { Trophy, Calendar, Hash } from "lucide-react";
+import { Trophy, Calendar, Hash, Trash2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Milestone } from "@/types";
 
-export const TimelineItem = ({ milestone }: { milestone: Milestone }) => {
+export const TimelineItem = ({
+  milestone,
+  onDelete
+}: {
+  milestone: Milestone;
+  onDelete: (number: number) => void;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -25,32 +31,38 @@ export const TimelineItem = ({ milestone }: { milestone: Milestone }) => {
 
       <motion.div
         whileHover={{ y: -4, scale: 1.01 }}
-        className={`relative p-6 rounded-2xl border transition-all duration-300
-        ${
-          milestone.isHighImpact
-            ? "bg-white dark:bg-surface-900 border-primary/30 shadow-xl shadow-primary/5 ring-1 ring-primary/10"
-            : "bg-white dark:bg-surface-900 border-surface-200 dark:border-surface-800 hover:border-primary/30 shadow-sm"
-        }`}
+        className="relative p-6 bg-white dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-800 transition-all duration-300"
       >
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div className="absolute top-4 right-4 flex gap-1 z-20">
+          <button
+            onClick={() => onDelete(milestone.number)}
+            className="p-2 opacity-0 group-hover:opacity-100 text-surface-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all"
+            title="삭제"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pr-12">
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold tracking-tight">
+            <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">
               {milestone.age}세
             </span>
             {milestone.isHighImpact && (
-              <span className="flex items-center gap-1 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-amber-200 dark:border-amber-800">
+              <span className="flex items-center gap-1 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-lg text-[10px] font-bold border border-amber-200 dark:border-amber-800">
                 <Trophy className="w-3 h-3" />
-                Key Milestone
+                Key
               </span>
             )}
           </div>
-          <div className="flex items-center gap-1 text-xs text-surface-500 font-medium">
+
+          <div className="flex items-center gap-1 text-xs text-surface-500 font-medium ml-auto md:ml-0">
             <Calendar className="w-3 h-3" />
             {milestone.date}
           </div>
         </div>
 
-        <h3 className="text-xl font-bold text-surface-900 dark:text-surface-100 mb-3 group-hover:text-primary transition-colors">
+        <h3 className="text-xl font-bold text-surface-900 dark:text-surface-100 mb-3 group-hover:text-primary transition-colors pr-12">
           {milestone.title}
         </h3>
 
