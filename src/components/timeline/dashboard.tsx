@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { BarChart3, Quote, Sparkles } from "lucide-react";
+import { ArrowRightIcon, BarChart3, Quote, Sparkles } from "lucide-react";
 import { Milestone } from "@/types";
+import { Link } from "react-router-dom";
 
 interface DashboardProps {
   stats: { total: number; highImpactCount: number; mostActiveAge: string } | null;
@@ -54,9 +55,12 @@ export const Dashboard = ({ stats, randomItem }: DashboardProps) => {
         <h4 className="text-lg font-bold text-surface-900 dark:text-surface-100 line-clamp-1">
           {randomItem.title}
         </h4>
-        <p className="text-xs text-primary mt-3 font-medium cursor-pointer hover:underline">
-          자세히 보러가기 →
-        </p>
+        <Link
+          to={`/timeline?target=${randomItem.number}`}
+          className="text-xs text-primary mt-3 font-medium cursor-pointer hover:underline flex items-center gap-1"
+        >
+          자세히 보러가기 <ArrowRightIcon className="w-3 h-3" />
+        </Link>
       </motion.div>
     </div>
   );

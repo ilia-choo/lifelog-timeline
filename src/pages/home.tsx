@@ -1,73 +1,55 @@
-import { useState } from "react";
-import { useMilestones, useDarkMode } from "@/hooks";
-import {
-  SiteHeader,
-  SiteFooter,
-  FilterBar,
-  TimelineList,
-  LoadingScreen,
-  MilestoneForm
-} from "@/components";
-import { Plus, X } from "lucide-react";
+import { useMilestoneContext } from "@/contexts";
+import { useDarkMode } from "@/hooks";
+import { SiteHeader, SiteFooter, TimelineItem } from "@/components";
+import { Dashboard } from "@/components/timeline/dashboard";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const Home = () => {
-  const { groupedMilestones, loading, error, categories, filters, actions } = useMilestones();
+export const Home = () => {
+  const { milestones, stats, randomMilestone } = useMilestoneContext();
   const { isDark, toggle } = useDarkMode();
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
-  if (loading) return <LoadingScreen />;
+  const highImpactItems = milestones.filter((m) => m.isHighImpact).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-surface-50 dark:bg-surface-950 transition-colors duration-500 py-12 px-4 md:px-8">
       <div className="max-w-3xl mx-auto">
         <SiteHeader isDark={isDark} toggle={toggle} />
 
-        <main>
-          <FilterBar
-            categories={categories}
-            selectedCategory={filters.selectedCategory}
-            onSelectCategory={actions.setSelectedCategory}
-            showHighImpact={filters.showHighImpact}
-            onToggleHighImpact={() => actions.setShowHighImpact(!filters.showHighImpact)}
-            searchQuery={filters.searchQuery}
-            onSearchChange={actions.setSearchQuery}
-          />
+        <main className="space-y-12">
+          <Dashboard stats={stats} randomItem={randomMilestone} />
 
-          <div className="mb-12">
-            {!isFormOpen ? (
-              <button
-                onClick={() => setIsFormOpen(true)}
-                className="w-full py-4 border-2 border-dashed border-surface-200 dark:border-surface-800 rounded-2xl text-surface-500 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 font-bold"
+          <section>
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-amber-500" />
+                <h2 className="text-2xl font-bold text-surface-900 dark:text-white">
+                  Life Highlights
+                </h2>
+              </div>
+              <Link
+                to="/timeline"
+                className="text-sm font-bold text-primary flex items-center gap-1 hover:underline"
               >
-                <Plus className="w-5 h-5" /> 새로운 기록 남기기
-              </button>
+                전체 타임라인 <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {highImpactItems.length > 0 ? (
+              <div className="space-y-4">
+                {highImpactItems.map((item) => (
+                  <TimelineItem key={item.id} milestone={item} />
+                ))}
+              </div>
             ) : (
-              <div className="relative">
-                <button
-                  onClick={() => setIsFormOpen(false)}
-                  className="absolute -top-3 -right-3 p-1 bg-white dark:bg-surface-800 rounded-full border shadow-sm z-10"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-                <MilestoneForm
-                  onSubmit={actions.addMilestone}
-                  onCancel={() => setIsFormOpen(false)}
-                />
+              <div className="text-center py-20 bg-white dark:bg-surface-900 rounded-3xl border border-dashed">
+                <p className="text-surface-500 italic">아직 기록된 특별한 순간이 없습니다.</p>
               </div>
             )}
-          </div>
-
-          <TimelineList
-            groupedMilestones={groupedMilestones}
-            error={error}
-            onDelete={actions.deleteItem}
-            onUpdate={actions.editItem}
-          />
+          </section>
         </main>
         <SiteFooter />
       </div>
     </div>
   );
 };
-
-export default Home;

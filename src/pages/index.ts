@@ -1,2 +1,2 @@
-export { default as Home } from "./home";
-export { default as Timeline } from "./timeline";
+export * from "./home";
+export * from "./timeline";

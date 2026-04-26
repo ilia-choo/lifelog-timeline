@@ -4,19 +4,10 @@ import ReactMarkdown from "react-markdown";
 import { Milestone } from "@/types";
 import { useState } from "react";
 import { MilestoneForm } from "@/components/timeline/milestone-form";
+import { useMilestoneContext } from "@/contexts";
 
-export const TimelineItem = ({
-  milestone,
-  onDelete,
-  onUpdate
-}: {
-  milestone: Milestone;
-  onDelete: (number: number) => void;
-  onUpdate: (
-    issueNumber: number,
-    data: { age: number; title: string; content: string; tags: string[] }
-  ) => Promise<void>;
-}) => {
+export const TimelineItem = ({ milestone }: { milestone: Milestone }) => {
+  const { actions } = useMilestoneContext();
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
@@ -25,7 +16,7 @@ export const TimelineItem = ({
         <MilestoneForm
           initialData={milestone}
           onSubmit={async (data) => {
-            await onUpdate(milestone.number, data);
+            await actions.editItem(milestone.number, data);
             setIsEditing(false);
           }}
           onCancel={() => setIsEditing(false)}
@@ -36,11 +27,12 @@ export const TimelineItem = ({
 
   return (
     <motion.div
+      id={`milestone-${milestone.number}`}
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="group relative pl-10 pb-12 last:pb-0"
+      className="group relative pl-10 pb-12 last:pb-0 scroll-mt-24"
     >
       <div className="absolute left-[11px] top-0 bottom-0 w-line bg-surface-200 dark:bg-surface-800 group-last:bottom-full group-last:h-0" />
 
@@ -55,7 +47,7 @@ export const TimelineItem = ({
 
       <motion.div
         whileHover={{ y: -4, scale: 1.01 }}
-        className="relative p-6 bg-white dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-800 transition-all duration-300"
+        className="relative p-6 bg-white dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-800 transition-all duration-300 shadow-sm"
       >
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-2">
@@ -70,11 +62,12 @@ export const TimelineItem = ({
             )}
           </div>
 
-          <div className="flex items-center gap-1 text-xs text-surface-500 font-medium ml-auto md:ml-0">
+          <div className="flex items-center gap-1 text-xs text-surface-500 font-medium ml-auto md:ml-0 pr-20 md:pr-0">
             <Calendar className="w-3 h-3" />
             {milestone.date}
           </div>
-          <div className="flex gap-1 z-20">
+
+          <div className="absolute top-4 right-4 flex gap-1">
             <button
               onClick={() => setIsEditing(true)}
               className="p-2 opacity-0 group-hover:opacity-100 text-surface-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
@@ -82,9 +75,8 @@ export const TimelineItem = ({
               <Pencil className="w-4 h-4" />
             </button>
             <button
-              onClick={() => onDelete(milestone.number)}
+              onClick={() => actions.deleteItem(milestone.number)}
               className="p-2 opacity-0 group-hover:opacity-100 text-surface-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all"
-              title="삭제"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -125,7 +117,7 @@ export const TimelineItem = ({
             {milestone.tags.map((tag) => (
               <span
                 key={tag}
-                className="flex items-center gap-1 px-2.5 py-1 bg-surface-50 dark:bg-surface-800/50 text-[11px] text-surface-500 dark:text-surface-400 rounded-lg border border-surface-200 dark:border-surface-700 hover:border-primary/40 hover:text-primary transition-all cursor-default"
+                className="flex items-center gap-1 px-2.5 py-1 bg-surface-50 dark:bg-surface-800/50 text-[11px] text-surface-500 dark:text-surface-400 rounded-lg border border-surface-200 dark:border-surface-700"
               >
                 <Hash className="w-3 h-3 opacity-50" />
                 {tag}
