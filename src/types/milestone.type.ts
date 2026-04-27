@@ -25,3 +25,20 @@ export interface MilestoneInput {
   content: string;
   tags: string[];
 }
+
+export interface MilestoneFilters {
+  selectedCategory: string | null;
+  showHighImpact: boolean;
+  searchQuery: string;
+}
+
+export interface MilestoneGroup {
+  decade: number;
+  items: Milestone[];
+}
+
+export interface MilestoneStats {
+  total: number;
+  highImpactCount: number;
+  mostActiveAge: string;
+}

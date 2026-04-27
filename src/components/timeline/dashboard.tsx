@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { ArrowRightIcon, BarChart3, Quote, Sparkles } from "lucide-react";
-import { Milestone } from "@/types";
+import { Milestone, MilestoneStats } from "@/types";
 import { Link } from "react-router-dom";
 
 interface DashboardProps {
-  stats: { total: number; highImpactCount: number; mostActiveAge: string } | null;
+  stats: MilestoneStats | null;
   randomItem: Milestone | null;
 }
 

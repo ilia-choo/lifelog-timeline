@@ -1,28 +1,9 @@
 import { AnimatePresence } from "framer-motion";
 import { TimelineItem } from "./timeline-item";
 import { useMilestoneContext } from "@/contexts";
-import { useMemo } from "react";
-import { Milestone } from "@/types";
 
 export const TimelineList = () => {
-  const { filteredMilestones, error } = useMilestoneContext();
-
-  const groupedMilestones = useMemo(() => {
-    const groups: { [key: number]: Milestone[] } = {};
-    filteredMilestones.forEach((m) => {
-      const decade = Math.floor(m.age / 10) * 10;
-      if (!groups[decade]) groups[decade] = [];
-      groups[decade].push(m);
-    });
-
-    return Object.keys(groups)
-      .map(Number)
-      .sort((a, b) => a - b)
-      .map((decade) => ({
-        decade,
-        items: groups[decade]
-      }));
-  }, [filteredMilestones]);
+  const { groupedMilestones, error } = useMilestoneContext();
 
   if (error) return <div className="text-center py-20 text-red-500">{error}</div>;
   if (groupedMilestones.length === 0)
