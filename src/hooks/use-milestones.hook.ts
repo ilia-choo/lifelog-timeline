@@ -67,14 +67,25 @@ export const useMilestones = () => {
     const previousMilestones = [...milestones];
 
     setMilestones((prev) =>
-      prev.map((m) => (m.number === issueNumber ? { ...m, ...data, title: data.title } : m))
+      getSortedMilestones(
+        prev.map((milestone) =>
+          milestone.number === issueNumber ? { ...milestone, ...data } : milestone
+        )
+      )
     );
 
     try {
-      await updateMilestone(issueNumber, data);
+      const updatedMilestone = await updateMilestone(issueNumber, data);
+      setMilestones((prev) =>
+        getSortedMilestones(
+          prev.map((milestone) => (milestone.number === issueNumber ? updatedMilestone : milestone))
+        )
+      );
+      return updatedMilestone;
     } catch (err) {
       setMilestones(getSortedMilestones(previousMilestones));
       alert("수정에 실패했습니다.");
+      throw err;
     }
   };
 

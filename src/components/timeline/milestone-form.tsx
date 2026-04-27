@@ -31,6 +31,8 @@ export const MilestoneForm = ({ onSubmit, onCancel, initialData }: MilestoneForm
           .filter(Boolean)
       });
       onCancel();
+    } catch (err) {
+      console.error("Milestone submit failed:", err);
     } finally {
       setIsSubmitting(false);
     }
