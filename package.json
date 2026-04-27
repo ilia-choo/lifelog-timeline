@@ -40,6 +40,14 @@
       "react-app/jest"
     ]
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/node_modules/react-scripts/config/jest/babelTransform.js"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
