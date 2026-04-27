@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { cn } from "@/utils";
-import { Milestone } from "@/types";
+import { Milestone, MilestoneInput } from "@/types";
 
 interface MilestoneFormProps {
-  onSubmit: (data: { age: number; title: string; content: string; tags: string[] }) => Promise<any>;
+  onSubmit: (data: MilestoneInput) => Promise<unknown>;
   onCancel: () => void;
   initialData?: Milestone;
 }

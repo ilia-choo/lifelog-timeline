@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Milestone } from "@/types";
+import { Milestone, MilestoneInput } from "@/types";
 import { createMilestone, deleteMilestone, getMilestones, updateMilestone } from "@/services";
 
 export const useMilestones = () => {
@@ -22,8 +22,8 @@ export const useMilestones = () => {
     try {
       const data = await getMilestones();
       setMilestones(data.sort(sortMilestones));
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "기록을 불러오지 못했습니다.");
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ export const useMilestones = () => {
     });
   }, [milestones, selectedCategory, showHighImpact, searchQuery]);
 
-  const addMilestone = async (data: any) => {
+  const addMilestone = async (data: MilestoneInput) => {
     const newEntry = await createMilestone(data);
     setMilestones((prev) => [...prev, newEntry].sort(sortMilestones));
     return newEntry;
@@ -73,7 +73,7 @@ export const useMilestones = () => {
     }
   };
 
-  const editItem = async (issueNumber: number, data: any) => {
+  const editItem = async (issueNumber: number, data: MilestoneInput) => {
     const previousMilestones = [...milestones];
 
     setMilestones((prev) =>

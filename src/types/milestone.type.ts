@@ -18,3 +18,10 @@ export interface Milestone {
   date: string;
   isHighImpact: boolean;
 }
+
+export interface MilestoneInput {
+  age: number;
+  title: string;
+  content: string;
+  tags: string[];
+}

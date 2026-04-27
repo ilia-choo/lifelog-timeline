@@ -62,12 +62,12 @@ export const TimelineItem = ({ milestone }: { milestone: Milestone }) => {
             )}
           </div>
 
-          <div className="flex items-center gap-1 text-xs text-surface-500 font-medium ml-auto md:ml-0 pr-20 md:pr-0">
+          <div className="flex items-center gap-1 text-sm text-surface-500 font-medium ml-auto md:ml-0 pr-20 md:pr-0">
             <Calendar className="w-3 h-3" />
             {milestone.date}
           </div>
 
-          <div className="absolute top-4 right-4 flex gap-1">
+          <div className="flex gap-1">
             <button
               onClick={() => setIsEditing(true)}
               className="p-2 opacity-0 group-hover:opacity-100 text-surface-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"

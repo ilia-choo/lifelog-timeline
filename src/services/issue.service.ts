@@ -1,4 +1,4 @@
-import { GithubIssue, Milestone } from "@/types";
+import { GithubIssue, Milestone, MilestoneInput } from "@/types";
 import { parseMilestone } from "@/utils";
 import { apiClient } from "@/apis/apiClient";
 
@@ -12,12 +12,7 @@ export const getMilestones = async (): Promise<Milestone[]> => {
   }
 };
 
-export const createMilestone = async (data: {
-  age: number;
-  title: string;
-  content: string;
-  tags: string[];
-}): Promise<Milestone> => {
+export const createMilestone = async (data: MilestoneInput): Promise<Milestone> => {
   const body = {
     title: `[${data.age}] ${data.title}`,
     body: data.content,
@@ -34,7 +29,7 @@ export const deleteMilestone = async (issueNumber: number) => {
 
 export const updateMilestone = async (
   issueNumber: number,
-  data: { age: number; title: string; content: string; tags: string[] }
+  data: MilestoneInput
 ): Promise<Milestone> => {
   const body = {
     title: `[${data.age}] ${data.title}`,
