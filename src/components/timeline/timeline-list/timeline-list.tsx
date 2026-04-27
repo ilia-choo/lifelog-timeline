@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { TimelineItem } from "./timeline-item";
+import { TimelineItem } from "../timeline-item";
 import { useMilestoneContext } from "@/contexts";
 
 export const TimelineList = () => {

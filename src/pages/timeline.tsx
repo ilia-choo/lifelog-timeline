@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useMilestoneContext } from "@/contexts";
 import { useDarkMode } from "@/hooks";
-import { SiteHeader, SiteFooter, FilterBar, TimelineList, MilestoneForm } from "@/components";
+import { SiteHeader, SiteFooter } from "@/components";
+import { FilterBar, TimelineList, MilestoneForm } from "@/components/timeline";
 import { Plus, X } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 

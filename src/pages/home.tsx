@@ -1,7 +1,7 @@
 import { useMilestoneContext } from "@/contexts";
 import { useDarkMode } from "@/hooks";
-import { SiteHeader, SiteFooter, TimelineItem } from "@/components";
-import { Dashboard } from "@/components/timeline/dashboard";
+import { SiteHeader, SiteFooter } from "@/components";
+import { Dashboard, TimelineItem } from "@/components/timeline";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
