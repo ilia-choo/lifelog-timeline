@@ -1,1 +1,2 @@
-export * from "./use-milestones";
+export * from "./use-milestones.hook";
+export * from "./use-dark-mode.hook";

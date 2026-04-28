@@ -6,7 +6,7 @@ const DEFAULT_MESSAGES = [
   "소중한 순간들을 정리하고 있어요...",
   "타임라인을 준비 중입니다...",
   "당신의 발자취를 돌아보며...",
-  "기억의 조각들을 맞추는 중...",
+  "기억의 조각들을 맞추는 중..."
 ];
 
 interface LoadingScreenProps {
@@ -16,7 +16,7 @@ interface LoadingScreenProps {
 
 export const LoadingScreen = ({
   messages = DEFAULT_MESSAGES,
-  interval = 2500,
+  interval = 2500
 }: LoadingScreenProps) => {
   const [index, setIndex] = useState(0);
 
@@ -33,12 +33,12 @@ export const LoadingScreen = ({
         <motion.div
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1],
+            opacity: [0.1, 0.2, 0.1]
           }}
           transition={{
             repeat: Infinity,
             duration: 4,
-            ease: "easeInOut",
+            ease: "easeInOut"
           }}
           className="absolute w-80 h-80 bg-primary/30 rounded-full blur-[100px] -z-10"
         />
@@ -78,7 +78,7 @@ export const LoadingScreen = ({
             transition={{
               repeat: Infinity,
               duration: 2,
-              ease: "easeInOut",
+              ease: "easeInOut"
             }}
             className="w-full h-full bg-gradient-to-r from-transparent via-primary to-transparent"
           />
